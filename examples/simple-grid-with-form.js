@@ -9,8 +9,16 @@ domain.persist('memory');
 // console.log(domain.schema.properties);
 
 var middle = forms.middleware({ 
-  form: 'grid-with-form',
+  view: 'grid-with-form',
   resource: domain,
+  form: {
+    create: {
+      legend: 'Add a new Domain'
+    },
+    grid: {
+      legend: 'Your Domains'
+    }
+  },
   schema: { 
     name: { 
       type: 'string',

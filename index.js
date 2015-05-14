@@ -31,14 +31,16 @@ function middleware (opts) {
 
   return function (req, res, next) {
     var entity = opts.resource || 'unknown';
-     opts.method = opts.method || opts.form;
+     opts.method = opts.method || opts.view;
      opts.params = req.resource.params;
      view.create({ path: __dirname + '/view', input: "html" }, function (err, view) {
        var str = '', form;
        form = view.form[opts.method] || view.form['method'];
+       opts.action = "/form";
        form.present(opts, function (err, html) {
          if (err) {
-           throw err;
+           res.end(err.message);
+           return;
          }
          res.setHeader('Content-Type', 'text/html');
          res.end(html);

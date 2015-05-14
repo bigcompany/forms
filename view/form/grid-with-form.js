@@ -1,7 +1,6 @@
 var resource = require('resource'),
     mschemaForms = require('mschema-forms');
 
-
 module['exports'] = function (opts, cb) {
 
   var r = opts.resource;
@@ -14,12 +13,22 @@ module['exports'] = function (opts, cb) {
      mschemaForms.generate({
        type: "generic",
        form: {
-         legend: "My Form"
+         legend: opts.form.create.legend,
+         action: opts.action
        },
        schema: opts.schema
       }, function (err, result) {
 
         $('.grid').append(result);
+
+        if (params.destroy) {
+          return entity.destroy(params.id, function (err) {
+            if (err) {
+              return cb(err);
+            }
+            finish();
+          });
+        }
 
         if (params.submitted) {
           // process posted form data
@@ -39,21 +48,24 @@ module['exports'] = function (opts, cb) {
             if (err) {
               res.end(err.message);
             }
-            mschemaForms.generate({
-               type: "grid",
-               form: {
-                 legend: "My Form"
-               },
-               schema: opts.schema,
-               data: results
-              }, function (err, re) {
-                if (err) {
-                  res.end(err.message);
-                }
-                //html += JSON.stringify(result, true, 2);
-                $('.grid').append(re);
-                cb(err, $.html());
-             });
+            if (results.length === 0) {
+              cb(null, $.html());
+            } else {
+              mschemaForms.generate({
+                 type: "grid",
+                 form: {
+                   legend: opts.form.grid.legend
+                 },
+                 schema: opts.schema,
+                 data: results
+                }, function (err, re) {
+                  if (err) {
+                    res.end(err.message);
+                  }
+                  $('.grid').append(re);
+                  cb(null, $.html());
+               });
+            }
           });
         }
 
