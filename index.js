@@ -13,10 +13,6 @@ forms.method("generate", generate, {
     "required": true,
     "default": {}
   },
-  "method": {
-    "type": "string",
-    "required": true
-  },
   "data": {
     "type": "object",
     "required": false
@@ -36,7 +32,7 @@ function middleware (opts) {
      view.create({ path: __dirname + '/view', input: "html" }, function (err, view) {
        var str = '', form;
        form = view.form[opts.method] || view.form['method'];
-       opts.action = "/form";
+       opts.action = opts.action || "/form";
        form.present(opts, function (err, html) {
          if (err) {
            res.end(err.message);
@@ -51,9 +47,12 @@ function middleware (opts) {
 };
 
 function generate (options, callback) {
-  view.create({ path: __dirname + '/view', input: "html"}, function (err, view) {
+  view.create({ path: __dirname + '/view', input: "html"  }, function (err, view) {
     var str = '', form;
-    form = view.form[options.method] || view.form['method'];
+    form = view.form[options.method] || view.form[options.view];
+    if (typeof form === "undefined") {
+      return callback(new Error('no form found'));
+    }
     form.present(options, function(err, res){
       if(err) {
         throw err;

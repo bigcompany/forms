@@ -8,11 +8,12 @@ module['exports'] = function (opts, cb) {
   var $ = this.$,
     self = this,
     output = '',
-    params = opts.params,
+    params = opts.params || {},
     entity = opts.resource || 'unknown';
      mschemaForms.generate({
        type: "generic",
        form: {
+         submit: opts.form.create.submit,
          legend: opts.form.create.legend,
          action: opts.action
        },

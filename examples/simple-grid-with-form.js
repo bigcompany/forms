@@ -11,6 +11,7 @@ domain.persist('memory');
 var middle = forms.middleware({ 
   view: 'grid-with-form',
   resource: domain,
+  action: "/form",
   form: {
     create: {
       legend: 'Add a new Domain'
