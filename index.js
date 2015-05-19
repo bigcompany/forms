@@ -54,9 +54,6 @@ function generate (options, callback) {
       return callback(new Error('no form found'));
     }
     form.present(options, function(err, res){
-      if(err) {
-        throw err;
-      }
       return callback(err, res);
     });
   });
