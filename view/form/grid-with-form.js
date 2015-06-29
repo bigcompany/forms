@@ -9,6 +9,7 @@ module['exports'] = function (opts, cb) {
     self = this,
     output = '',
     params = opts.params || {},
+    query = opts.query || {},
     entity = opts.resource || 'unknown';
      mschemaForms.generate({
        type: "generic",
@@ -45,7 +46,7 @@ module['exports'] = function (opts, cb) {
         }
 
         function finish () {
-          entity.all(function (err, results) {
+          entity.find(query, function (err, results) {
             if (err) {
               res.end(err.message);
             }
