@@ -1,5 +1,4 @@
-var resource = require('resource'),
-    mschemaForms = require('mschema-forms');
+var mschemaForms = require('mschema-forms');
 
 module['exports'] = function (opts, cb) {
 
@@ -24,6 +23,7 @@ module['exports'] = function (opts, cb) {
         $('.grid').append(result);
 
         if (params.destroy) {
+          // TODO: add role check
           return entity.destroy(params.id, function (err) {
             if (err) {
               return cb(err);
@@ -31,8 +31,7 @@ module['exports'] = function (opts, cb) {
             finish();
           });
         }
-
-        if (params.submitted) {
+        if (typeof params.submitted !== 'undefined') {
           // process posted form data
           entity.create(params, function (err, result){
             if (err) {
@@ -46,17 +45,23 @@ module['exports'] = function (opts, cb) {
         }
 
         function finish () {
-          entity.find(query, function (err, results) {
+          // why is there a databind happening here? did we need this scope somewhere else for another feature?
+          entity.find.call({ 'hello': 'there', req: opts.req, res: opts.res }, query, function (err, results) {
             if (err) {
-              res.end(err.message);
+              return opts.res.end(err.message);
             }
-            if (results.length === 0) {
+            if (opts.req.jsonResponse) {
+              return opts.res.json(results);
+            }
+            if (results && results.length === 0) {
               cb(null, $.html());
             } else {
               mschemaForms.generate({
                  type: "grid",
                  form: {
-                   legend: opts.form.grid.legend
+                   legend: opts.form.grid.legend,
+                   submit: opts.form.submit,
+                   keys: opts.form.grid.keys
                  },
                  schema: opts.schema,
                  data: results
