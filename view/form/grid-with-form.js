@@ -50,6 +50,14 @@ module['exports'] = function (opts, cb) {
             if (err) {
               return opts.res.end(err.message);
             }
+
+            results = results.filter(function (item) {
+              if (item.key_type === "internal") {
+                return false;
+              }
+              return true;
+            });
+
             if (opts.req.jsonResponse) {
               return opts.res.json(results);
             }

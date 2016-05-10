@@ -1,6 +1,6 @@
 {
   "name": "resource-forms",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "for generating HTML forms",
   "keywords": [
     "big.vc",
@@ -9,13 +9,12 @@
   ],
   "main": "./index.js",
   "dependencies": {
-    "resource": "0.5.x",
     "mschema-forms": "*",
-    "view": "0.8.x"
+    "view": "*"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
-  "license": "ISC"
+  "license": "MIT"
 }
