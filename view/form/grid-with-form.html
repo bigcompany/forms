@@ -1,2 +1,14 @@
+<script>
+ $(document).ready(function(){
+   $('#roles-select-none').change(function(){
+      $('input[name="roles"]').attr('checked', false);
+      $('#roles-select-all').attr('checked', false);
+    });
+    $('#roles-select-all').change(function(){
+      $('input[name="roles"]').prop('checked', true);
+      $('#roles-select-none').attr('checked', false);
+    });
+ });
+</script>
 <span class="message"></span>
 <div class="grid"></div>
