@@ -66,11 +66,7 @@ module['exports'] = function (opts, cb) {
             } else {
               mschemaForms.generate({
                  type: "grid",
-                 form: {
-                   legend: opts.form.grid.legend,
-                   submit: opts.form.submit,
-                   keys: opts.form.grid.keys
-                 },
+                 form: opts.form,
                  schema: opts.schema,
                  data: results
                 }, function (err, re) {
