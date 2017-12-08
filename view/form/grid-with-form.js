@@ -45,8 +45,9 @@ module['exports'] = function (opts, cb) {
         }
 
         function finish () {
+
           // why is there a databind happening here? did we need this scope somewhere else for another feature?
-          entity.find.call({ 'hello': 'there', req: opts.req, res: opts.res }, query, function (err, results) {
+          entity.find.call({ req: opts.req, res: opts.res }, query, function (err, results) {
             if (err) {
               return opts.res.end(err.message);
             }
@@ -66,7 +67,7 @@ module['exports'] = function (opts, cb) {
             } else {
               mschemaForms.generate({
                  type: "grid",
-                 form: opts.form,
+                 form: opts.form.grid,
                  schema: opts.schema,
                  data: results
                 }, function (err, re) {
